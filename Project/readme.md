@@ -21,16 +21,13 @@ Frontend: Simple, responsive user interface built using React and Tailwind CSS f
 
 
 🚀 Setup and Launch
-
->Prerequisites
+Prerequisites~
 
 >Python 3.8+
 
 >Git
 
-
-
-Model Artifacts: Ensure your trained weights (plant_cnn.pth) and the complete text model directory (text_model_artifacts/) are present in the project root.
+>Model Artifacts: Ensure your trained weights (plant_cnn.pth) and the complete text model directory (text_model_artifacts/) are present in the project root.
 
 1. Environment Setup
 #Clone the repository
