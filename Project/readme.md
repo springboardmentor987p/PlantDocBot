@@ -20,7 +20,7 @@ API Service: High-speed prediction endpoints built with FastAPI and Uvicorn.
 Frontend: Simple, responsive user interface built using React and Tailwind CSS for easy local deployment.
 
 
-🚀 Setup and Launch
+🚀 Setup and Launch<br>
 Prerequisites~
 
 >Python 3.8+
