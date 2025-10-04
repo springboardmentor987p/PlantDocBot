@@ -20,7 +20,8 @@ The application demonstrates a standard production workflow: Frontend (Client) -
 2.POST /text-prediction: Takes a JSON string and returns the predicted disease class (38 classes).
 
 <br>
-<b>Workflow</b><br>
+<b>Workflow</b>
+<br>
 
 1.The user interacts with the React frontend (loaded via index.html).
 
