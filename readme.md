@@ -1,4 +1,5 @@
 PlantDoc Bot: Dual-Modal Disease Prediction API
+
 🌿 Overview
 PlantDoc Bot is a comprehensive application for diagnosing common plant diseases using two independent machine learning models: Image Classification and Text Classification.
 
