@@ -1,7 +1,7 @@
-PlantDoc Bot: Dual-Modal Disease Prediction API
+<h2>PlantDoc Bot: Dual-Modal Disease Prediction API</h2>
 
 
-🌿 Overview
+<b>🌿 Overview</b>
 
 PlantDoc Bot is a comprehensive application for diagnosing common plant diseases using two independent machine learning models: Image Classification and Text Classification.
 
@@ -9,7 +9,7 @@ The project is built on a high-performance FastAPI backend that exposes predicti
 
 
 
-✨ Features
+<b>✨ Features</b>
 
 Image Diagnosis: Uses a fine-tuned PyTorch CNN (Convolutional Neural Network) to classify diseases from uploaded leaf images (15 classes).
 
@@ -20,16 +20,17 @@ API Service: High-speed prediction endpoints built with FastAPI and Uvicorn.
 Frontend: Simple, responsive user interface built using React and Tailwind CSS for easy local deployment.
 
 
-🚀 Setup and Launch<br>
+<b>🚀 Setup and Launch<br></b>
 Prerequisites~
 
->Python 3.8+
+->Python 3.8+
 
->Git
+->Git
 
->Model Artifacts: Ensure your trained weights (plant_cnn.pth) and the complete text model directory (text_model_artifacts/) are present in the project root.
+->Model Artifacts: Ensure your trained weights (plant_cnn.pth) and the complete text model directory (text_model_artifacts/) are present in the project root.
 
-1. Environment Setup
+1. Environment Setup<br>
+
 #Clone the repository
 git clone [https://github.com/springboardmentor987p/PlantDocBot/tree/intern-HarshKumarDubey/Project]
 cd plantdocbot
