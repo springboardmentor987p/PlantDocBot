@@ -21,7 +21,7 @@ The application demonstrates a standard production workflow: Frontend (Client) -
 
 <br>
 <b>Workflow</b>
-<br>
+<br><br>
 
 1.The user interacts with the React frontend (loaded via index.html).
 
