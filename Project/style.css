@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Add shadow and highlight for upload/result boxes */
+.upload-box, .result-box {
+    box-shadow: 0 4px 24px 0 #2563eb33, 0 1.5px 0 0 #38bdf8 inset;
+    border-radius: 1rem;
+    border: 1.5px solid #2563eb;
+    background: linear-gradient(135deg, #e0f7fa 0%, #f1f5f9 100%);
+    transition: box-shadow 0.2s;
+}
+
+.upload-box:hover, .result-box:hover {
+    box-shadow: 0 8px 32px 0 #2563eb55, 0 2px 0 0 #38bdf8 inset;
+    border-color: #38bdf8;
+}
+
+.input-panel, .output-panel {
+    box-shadow: 0 6px 32px 0 #2563eb44, 0 2px 0 0 #38bdf8 inset;
+    border-radius: 1.2rem;
+    border: 2px solid #2563eb;
+    background: linear-gradient(135deg, #e0f7fa 0%, #f1f5f9 100%);
+    transition: box-shadow 0.2s, border-color 0.2s;
+    margin-bottom: 1.5rem;
+}
+
+.input-panel:hover, .output-panel:hover {
+    box-shadow: 0 12px 40px 0 #2563eb66, 0 3px 0 0 #38bdf8 inset;
+    border-color: #38bdf8;
+}
+
+/* Optional: Make headings inside these panels more visible */
+.input-panel h2, .output-panel h2 {
+    color: #1e293b;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin-bottom: 1rem;
+}
+
