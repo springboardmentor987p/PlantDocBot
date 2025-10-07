@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+:root {
+  --font-main: 'Inter', sans-serif;
+  
+  /* A vibrant, futuristic color palette */
+  --color-purple: #8338ec;
+  --color-pink: #ff006e;
+  --color-blue: #3a86ff;
+  --color-green: #06d6a0;
+  --color-yellow: #ffbe0b;
+
+  --color-dark: #1a1a2e;
+  --color-light: #e0e1dd;
+  
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  color: var(--color-light);
+  overflow-x: hidden;
+}
+
+.app-bg {
+  background-color: var(--color-dark);
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(131, 56, 236, 0.3), transparent 30%),
+    radial-gradient(circle at 85% 30%, rgba(58, 134, 255, 0.3), transparent 30%),
+    radial-gradient(circle at 50% 90%, rgba(6, 214, 160, 0.3), transparent 30%);
+  min-height: 100vh;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.main-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--color-purple), var(--color-pink), var(--color-green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 50px;
+  text-align: center;
+  text-shadow: 0 0 20px rgba(255, 0, 110, 0.3);
+}
+
+.classifiers-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.classifier-container {
+  background: rgba(40, 42, 60, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 40px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  transition: transform 0.3s ease;
+}
+
+.classifier-container:hover {
+    transform: translateY(-10px);
+}
+
+.card-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--color-light);
+  margin: 0;
+}
+
+.file-drop-zone {
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.file-drop-zone:hover {
+  border-color: var(--color-green);
+  background: rgba(6, 214, 160, 0.1);
+}
+
+.file-drop-zone p {
+  margin: 10px 0 0;
+  color: var(--color-light);
+}
+
+#image-upload {
+  display: none;
+}
+
+.preview-image {
+  width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+textarea {
+  width: 100%;
+  min-height: 160px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(26, 26, 46, 0.8);
+  padding: 20px;
+  font-family: var(--font-main);
+  font-size: 1rem;
+  color: var(--color-light);
+  resize: none;
+  transition: all 0.3s ease;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--color-blue);
+  box-shadow: 0 0 0 4px rgba(58, 134, 255, 0.2);
+}
+
+.predict-button {
+  background: linear-gradient(90deg, var(--color-purple), var(--color-pink));
+  color: var(--color-light);
+  border: none;
+  border-radius: 50px;
+  padding: 18px 30px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  box-sizing: border-box;
+  box-shadow: 0 5px 20px rgba(255, 0, 110, 0.3);
+}
+
+.predict-button:disabled {
+  background: #555;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.result-card {
+  background: linear-gradient(135deg, rgba(6, 214, 160, 0.1), rgba(58, 134, 255, 0.1));
+  border-radius: 20px;
+  padding: 25px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--color-green);
+}
+
+.result-card h3 {
+  margin: 0 0 10px;
+  color: var(--color-green);
+  font-size: 1.5rem;
+}
+
+.error-text {
+  color: #ff9999;
+  background: rgba(255, 0, 110, 0.15);
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid var(--color-pink);
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.loader {
+    width: 28px;
+    height: 28px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top-color: var(--color-light);
+    border-radius: 50%;
+}
