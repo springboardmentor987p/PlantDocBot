@@ -1,12 +1,12 @@
-# RGB Model Training files
+# RGB Model Files
 
-This project includes an RGB image prediction model. Users need to train the model locally to generate the necessary files.  
+This project includes an RGB image prediction model. Due to GitHub file size limits, the trained model is not included in the repository.  
 
-## Train the RGB Model
-1. Open the `RGB Model training code.ipynb` notebook located in `training-model-codes/`.  
-2. Follow the instructions in the notebook to train the model using the provided dataset.  
-3. After training is complete, save the generated model files (e.g., `.pt` or `.h5`) locally.  
+## Download the RGB Model
+Please download the pre-trained RGB model file (`.pth`) from the following Google Drive link:
 
-## Place the Model Files
-Once trained, move the model files into the following folder in the project:
+[Download RGB Model](https://drive.google.com/drive/folders/1lD3W5TuqAVPcf03XO0acXOTHqpcFgzhD?usp=sharing)
+
+## Place the Model File
+After downloading, move the model file into the following folder in the project:
 
