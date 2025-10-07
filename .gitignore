@@ -2,3 +2,7 @@
 *.pth
 myenv/
 __pycache__/
+*.safetensors
+*.pth
+myenv/
+__pycache__/
