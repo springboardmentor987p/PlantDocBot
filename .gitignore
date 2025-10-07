@@ -6,3 +6,5 @@ __pycache__/
 *.pth
 myenv/
 __pycache__/
+*.pyc
+__pycache__/
