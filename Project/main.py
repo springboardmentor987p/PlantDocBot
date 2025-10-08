@@ -39,8 +39,8 @@ IMAGE_CLASSES = {
 }
 NUM_IMAGE_CLASSES = len(IMAGE_CLASSES)
 
-mean = [0.5] 
-std = [0.5]
+mean = [0.4487] 
+std = [0.1831]
 
 image_transform = transforms.Compose([
     transforms.Resize((128, 128)), 
@@ -240,4 +240,5 @@ async def text_predict(data: TextInput):
             status_code=500,
             content={"message": f"Text prediction failed due to an internal error: {e}"}
         )
+
 
