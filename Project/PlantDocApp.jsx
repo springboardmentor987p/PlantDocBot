@@ -1,0 +1,297 @@
+const { useState, useCallback, useMemo, useEffect } = React;
+
+// --- API BASE URL ---
+const API_BASE_URL = 'http://127.0.0.1:8000';
+
+function UploadIcon() {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 mx-auto text-indigo-500 mb-2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 18H17.25a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v8.55C4.5 15.6 5.518 16.5 6.75 16.5z" />
+        </svg>
+    );
+}
+
+function PlantDocApp() {
+    const [activeTab, setActiveTab] = useState('image'); // 'image' or 'text'
+    const [imageFile, setImageFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState(null);
+    const [textInput, setTextInput] = useState('');
+    const [result, setResult] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    // --- Reset Functions ---
+    const resetState = useCallback(() => {
+        setResult(null);
+        setError(null);
+        setLoading(false);
+    }, []);
+
+    const resetImage = useCallback(() => {
+        if (imagePreview) URL.revokeObjectURL(imagePreview); // memory cleanup
+        setImageFile(null);
+        setImagePreview(null);
+        resetState();
+    }, [imagePreview, resetState]);
+
+    // --- Image Handling ---
+    const handleImageChange = useCallback((file) => {
+        if (file && file.type.startsWith('image/')) {
+            resetImage();
+            setImageFile(file);
+
+            const previewUrl = URL.createObjectURL(file);
+            setImagePreview(previewUrl);
+
+            return () => URL.revokeObjectURL(previewUrl);
+        } else {
+            setError("Please select a valid image file (.jpg, .png).");
+        }
+    }, [resetImage]);
+
+    const handleDrop = useCallback((e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const file = e.dataTransfer.files[0];
+        handleImageChange(file);
+    }, [handleImageChange]);
+
+    const handleDragOver = useCallback((e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    }, []);
+
+    // --- API Health Check ---
+    const checkApiHealth = async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/`);
+            if (!response.ok) throw new Error("Server not responding.");
+            const data = await response.json();
+            if (!data.image_model_loaded && activeTab === 'image') {
+                throw new Error("Image Model not loaded on server.");
+            }
+            if (!data.text_model_loaded && activeTab === 'text') {
+                 throw new Error("Text Model not loaded on server.");
+            }
+            return true;
+        } catch (e) {
+            setError(`API Server Offline or model not loaded: ${e.message}`);
+            setLoading(false);
+            return false;
+        }
+    };
+
+    // --- Submissions ---
+    const handleImageSubmit = async () => {
+        if (!imageFile) return setError("Please upload an image first.");
+        resetState();
+        if (!(await checkApiHealth())) return;
+
+        setLoading(true);
+        setError(null);
+
+        const formData = new FormData();
+        formData.append('file', imageFile);
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/image-prediction`, {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+
+            if (response.ok) setResult(data);
+            else throw new Error(data.message || "Prediction error.");
+        } catch (e) {
+            setError(`Prediction failed: ${e.message}`);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleTextSubmit = async () => {
+        if (!textInput.trim()) return setError("Please enter symptom text first.");
+        resetState();
+        if (!(await checkApiHealth())) return;
+
+        setLoading(true);
+        setError(null);
+
+        const payload = { text_input: textInput.trim() };
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/text-prediction`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await response.json();
+
+            if (response.ok) setResult(data);
+            else throw new Error(data.message || "Prediction error.");
+        } catch (e) {
+            setError(`Prediction failed: ${e.message}`);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // --- Render Input ---
+    const renderInput = () => {
+        if (activeTab === 'image') {
+            return (
+                <div className="flex flex-col space-y-4">
+                    <div
+                        onDrop={handleDrop}
+                        onDragOver={handleDragOver}
+                        onClick={() => document.getElementById('image-upload').click()}
+                        className={`border-2 border-dashed p-6 rounded-lg text-center cursor-pointer transition duration-150 ${imageFile ? 'border-indigo-500 bg-indigo-50' : 'border-gray-300 hover:border-indigo-400 hover:bg-gray-50'}`}
+                    >
+                        <input
+                            type="file"
+                            id="image-upload"
+                            accept="image/*"
+                            onChange={(e) => handleImageChange(e.target.files[0])}
+                            className="hidden"
+                        />
+                        {imagePreview ? (
+                            <>
+                                <img
+                                    src={imagePreview}
+                                    alt="Preview"
+                                    className="max-h-64 w-full object-contain rounded-md mx-auto mb-3 border border-gray-200 hover:scale-105 transition-transform"
+                                />
+                                <p className="text-sm font-medium text-gray-700">{imageFile.name}</p>
+                                <p className="text-xs text-gray-500 mt-1">Click or drop to change image.</p>
+                            </>
+                        ) : (
+                            <>
+                                <UploadIcon />
+                                <p className="text-sm font-semibold text-gray-700">Drag & drop an image here</p>
+                                <p className="text-xs text-gray-500">or click to browse (.jpg, .png)</p>
+                            </>
+                        )}
+                    </div>
+                    {imageFile && (
+                        <>
+                            <button
+                                onClick={handleImageSubmit}
+                                disabled={loading}
+                                className={`w-full py-3 rounded-lg font-bold text-white transition duration-200 ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700 shadow-md'}`}
+                            >
+                                {loading ? 'Diagnosing...' : 'Diagnose from Image'}
+                            </button>
+                            <button
+                                onClick={resetImage}
+                                className="w-full py-2 rounded-lg font-medium text-red-600 hover:underline mt-2"
+                            >
+                                Clear Image
+                            </button>
+                        </>
+                    )}
+                </div>
+            );
+        } else {
+            return (
+                <div className="flex flex-col space-y-4">
+                    <textarea
+                        value={textInput}
+                        onChange={(e) => setTextInput(e.target.value)}
+                        placeholder="Enter symptoms e.g., leaves are curling and turning yellow..."
+                        rows="6"
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 resize-none"
+                        onKeyDown={(e) => { if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleTextSubmit(); } }}
+                    ></textarea>
+                    <button
+                        onClick={handleTextSubmit}
+                        disabled={loading}
+                        className={`w-full py-3 rounded-lg font-bold text-white transition duration-200 ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700 shadow-md'}`}
+                    >
+                        {loading ? 'Analyzing Text...' : 'Diagnose from Text'}
+                    </button>
+                    {textInput && (
+                        <button
+                            onClick={() => { setTextInput(''); resetState(); }}
+                            className="w-full py-2 rounded-lg font-medium text-red-600 hover:underline mt-2"
+                        >
+                            Clear Text
+                        </button>
+                    )}
+                </div>
+            );
+        }
+    };
+
+    // --- Render Result ---
+    const renderResult = useMemo(() => {
+        if (loading) {
+            return (
+                <div className="flex items-center space-x-3 text-indigo-600">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"></div>
+                    <span className="font-semibold">Processing Prediction...</span>
+                </div>
+            );
+        }
+
+        if (error) {
+            return (
+                <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                    <p className="font-bold">Error:</p>
+                    <p className="text-sm">{error}</p>
+                </div>
+            );
+        }
+
+        if (result) {
+            const confidencePercent = (parseFloat(result.confidence) * 100).toFixed(2);
+            return (
+                <div className="space-y-3 p-4 bg-white rounded-lg shadow-md border border-gray-200">
+                    <p className="font-semibold text-lg">Predicted Class: <span className="text-indigo-600">{result.predicted_class}</span></p>
+                    <p className="font-semibold text-sm">Model Version: <span className="text-gray-700">{result.model_version}</span></p>
+                    <div className="w-full bg-gray-200 rounded-full h-4 mt-1">
+                        <div
+                            key={result.predicted_class}
+                            className="bg-indigo-600 h-4 rounded-full transition-all duration-500"
+                            style={{ width: `${confidencePercent}%` }}
+                        ></div>
+                    </div>
+                    <p className="text-sm mt-1 font-medium">Confidence: {confidencePercent}%</p>
+                    <p className="text-sm mt-2">Recommendation: <span className="text-green-700 font-medium">{result.recommendation}</span></p>
+                </div>
+            );
+        }
+
+        return null;
+    }, [result, error, loading]);
+
+    return (
+        <div className="max-w-3xl mx-auto p-6 space-y-6">
+            <h1 className="text-3xl font-bold text-center text-indigo-700">PlantDoc Diagnosis</h1>
+
+            {/* Tabs */}
+            <div className="flex justify-center space-x-6">
+                <button
+                    onClick={() => { setActiveTab('image'); resetState(); }}
+                    className={`px-4 py-2 font-semibold rounded-lg ${activeTab === 'image' ? 'bg-indigo-600 text-white shadow-md' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                >
+                    Image Diagnosis
+                </button>
+                <button
+                    onClick={() => { setActiveTab('text'); resetState(); }}
+                    className={`px-4 py-2 font-semibold rounded-lg ${activeTab === 'text' ? 'bg-indigo-600 text-white shadow-md' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                >
+                    Text Diagnosis
+                </button>
+            </div>
+
+            {/* Input */}
+            {renderInput()}
+
+            {/* Result */}
+            {renderResult}
+        </div>
+    );
+}
+
+// --- Render React App ---
+ReactDOM.render(<PlantDocApp />, document.getElementById('root'));
