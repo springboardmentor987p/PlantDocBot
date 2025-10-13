@@ -1,3 +1,5 @@
+<img width="1879" height="854" alt="Screenshot 2025-10-13 143226" src="https://github.com/user-attachments/assets/977ae6c8-84e7-4eca-b463-3c5ff5095d24" />
+
 <h2>PlantDoc Bot: Dual-Modal Disease Prediction API</h2>
 
 
@@ -57,3 +59,9 @@ Solution: Use a simple local server. In your project folder, inside a new termin
 python -m http.server 8000
 
 this will run the application on : http://localhost:8000/index.html
+
+
+
+
+![Uploading Screenshot 2025-10-13 143226.png…]()
+
