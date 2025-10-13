@@ -1,0 +1,25 @@
+# --- Core backend ---
+fastapi==0.115.0
+uvicorn==0.32.0
+
+# --- Deep learning ---
+torch==2.4.1
+torchvision==0.19.1
+torchaudio==2.4.1
+
+# --- NLP (for text model) ---
+transformers==4.45.2
+tokenizers==0.20.0
+
+# --- Image processing ---
+Pillow==10.4.0
+
+# --- Utility libraries ---
+numpy==1.26.4
+pydantic==2.9.2
+python-multipart==0.0.12  # for FastAPI file uploads
+requests==2.32.3
+
+# --- Optional but helpful ---
+tqdm==4.66.4
+scikit-learn==1.5.2
